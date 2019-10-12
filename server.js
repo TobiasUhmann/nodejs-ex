@@ -202,6 +202,7 @@ app.put('/track/:trackId', (request, response) => {
   }
   if (db) {
     console.log('update')
+    delete update._id;
     console.log(update)
     console.log(trackId)
     db.collection("tracks").update(
