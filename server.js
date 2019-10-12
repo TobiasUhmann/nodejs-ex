@@ -2,11 +2,17 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
+
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
     
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
+
+server.use(bodyParser.urlencoded({ extended: false }))
+server.use(bodyParser.json())
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -121,6 +127,78 @@ app.get('/pagecount', function (req, res) {
     res.send('{ pageCount: -1 }');
   }
 });
+
+//
+// Define routes
+//
+
+server.get('/tracks', function(request, response, next) {
+  Track.find((error, foundTracks) => {
+    if (error) {
+      console.error(error)
+      response.status(500).send(error)
+    } else {
+      response.json(foundTracks)
+    }
+  })
+})
+
+server.post('/track', (request, response) => {
+  const newTrack = request.body
+
+  Track.create(newTrack, (error, createdTrack) => {
+    if (error) {
+      console.error(error)
+      response.status(500).send(error)
+    }
+
+    response.status(201).json(createdTrack)
+  })
+})
+
+server.get('/track/:trackId', (request, response) => {
+  const trackId = request.params.trackId
+
+  Track.findById(trackId, (error, foundTrack) => {
+    if (error) {
+      console.error(error)
+      response.status(500).send(error)
+    }
+
+    response.status(200).json(foundTrack)
+  })
+})
+
+server.put('/track/:trackId', (request, response) => {
+  const trackId = request.params.trackId
+  const update = request.body
+
+  Track.findByIdAndUpdate(trackId, update, (error, updatedTrack) => {
+    if (error) {
+      console.error(error)
+      response.status(500).send(error)
+    }
+
+    response.status(200).json(updatedTrack)
+  })
+})
+
+server.delete('/track/:trackId', (request, response) => {
+  const trackId = request.params.trackId
+
+  track.findByIdAndRemove(trackId, (error, removedTrack) => {
+    if (error) {
+      console.error(error)
+      response.status(500).send(error)
+    }
+
+    response.status(200).json(removedTrack)
+  })
+})
+
+//
+//
+//
 
 // error handling
 app.use(function(err, req, res, next){
