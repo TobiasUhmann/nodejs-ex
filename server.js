@@ -201,13 +201,20 @@ app.put('/track/:trackId', (request, response) => {
     initDb(function(err){});
   }
   if (db) {
+    console.log('update')
+    console.log(update)
+    console.log(trackId)
     db.collection("tracks").update(
       { _id: ObjectID(trackId) },
       {
         $set: update
       },
       function(err, updatedTrack) {
-        response.status(200).json(updatedTrack)
+        if (err) {
+          response.status(500).json(error)
+        } else {
+          response.status(200).json(updatedTrack)
+        }
       }
    )
   } else {
