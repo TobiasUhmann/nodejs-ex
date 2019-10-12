@@ -156,7 +156,7 @@ app.post('/track', (request, response) => {
     initDb(function(err){});
   }
   if (db) {
-    db.collection("tracks").insertOne(newTrack, function(err, res) {
+    db.collection("tracks").insertOne(newTrack, function(err, createdTrack) {
       response.status(201).json(createdTrack)
     });
   } else {
