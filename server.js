@@ -134,85 +134,73 @@ app.get('/pagecount', function (req, res) {
 // Define routes
 //
 
-// app.get('/tracks', function (req, res) {
-//   if (!db) {
-//     initDb(function(err){});
-//   }
-//   if (db) {
-//     db.collection('tracks').find({}).toArray(function(err, result){
-//       res.send(result);
-//     });
-//   } else {
-//     res.send('error');
-//   }
-// });
-
-app.get('/tracks', function(request, response, next) {
+app.get('/tracks', function (req, res) {
   if (!db) {
     initDb(function(err){});
   }
-  Track.find((error, foundTracks) => {
-    if (error) {
-      console.error(error)
-      response.status(500).send(error)
-    } else {
-      response.json(foundTracks)
-    }
-  })
-})
+  if (db) {
+    db.collection('tracks').find({}).toArray(function(err, result){
+      res.send(result);
+    });
+  } else {
+    res.send('error');
+  }
+});
 
 app.post('/track', (request, response) => {
   const newTrack = request.body
 
-  Track.create(newTrack, (error, createdTrack) => {
-    if (error) {
-      console.error(error)
-      response.status(500).send(error)
-    }
-
-    response.status(201).json(createdTrack)
-  })
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+    db.collection("tracks").insertOne(newTrack, function(err, res) {
+      response.status(201).json(createdTrack)
+    });
+  } else {
+    res.send('error');
+  }
 })
 
-app.get('/track/:trackId', (request, response) => {
-  const trackId = request.params.trackId
+// app.get('/track/:trackId', (request, response) => {
+//   const trackId = request.params.trackId
 
-  Track.findById(trackId, (error, foundTrack) => {
-    if (error) {
-      console.error(error)
-      response.status(500).send(error)
-    }
+//   Track.findById(trackId, (error, foundTrack) => {
+//     if (error) {
+//       console.error(error)
+//       response.status(500).send(error)
+//     }
 
-    response.status(200).json(foundTrack)
-  })
-})
+//     response.status(200).json(foundTrack)
+//   })
+// })
 
-app.put('/track/:trackId', (request, response) => {
-  const trackId = request.params.trackId
-  const update = request.body
+// app.put('/track/:trackId', (request, response) => {
+//   const trackId = request.params.trackId
+//   const update = request.body
 
-  Track.findByIdAndUpdate(trackId, update, (error, updatedTrack) => {
-    if (error) {
-      console.error(error)
-      response.status(500).send(error)
-    }
+//   Track.findByIdAndUpdate(trackId, update, (error, updatedTrack) => {
+//     if (error) {
+//       console.error(error)
+//       response.status(500).send(error)
+//     }
 
-    response.status(200).json(updatedTrack)
-  })
-})
+//     response.status(200).json(updatedTrack)
+//   })
+// })
 
-app.delete('/track/:trackId', (request, response) => {
-  const trackId = request.params.trackId
+// app.delete('/track/:trackId', (request, response) => {
+//   const trackId = request.params.trackId
 
-  track.findByIdAndRemove(trackId, (error, removedTrack) => {
-    if (error) {
-      console.error(error)
-      response.status(500).send(error)
-    }
+//   track.findByIdAndRemove(trackId, (error, removedTrack) => {
+//     if (error) {
+//       console.error(error)
+//       response.status(500).send(error)
+//     }
 
-    response.status(200).json(removedTrack)
-  })
-})
+//     response.status(200).json(removedTrack)
+//   })
+// })
 
 //
 //
