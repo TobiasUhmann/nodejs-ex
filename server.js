@@ -5,6 +5,8 @@ var express = require('express'),
 
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+
+const Track = require('./models/track.js')
     
 Object.assign=require('object-assign')
 
