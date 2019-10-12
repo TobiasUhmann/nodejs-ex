@@ -159,7 +159,7 @@ app.post('/track', (request, response) => {
   }
   if (db) {
     db.collection("tracks").insertOne(newTrack, function(err, createdTrack) {
-      response.status(201).json(createdTrack)
+      response.status(201).json(newTrack)
     });
   } else {
     res.send('error');
