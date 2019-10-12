@@ -202,7 +202,6 @@ app.put('/track/:trackId', (request, response) => {
     db.collection("tracks").update(
       { _id: trackId },
       {
-        $inc: { stock: 5 },
         $set: update
       },
       function(err, updatedTrack) {
