@@ -16,7 +16,7 @@ app.use(morgan('combined'))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-server.use(cors())
+app.use(cors())
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
