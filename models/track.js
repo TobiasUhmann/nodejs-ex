@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const schema = mongoose.Schema({
-  timestamp: long,
+  timestamp: Date,
   images: [String] // Base64
 })
 
