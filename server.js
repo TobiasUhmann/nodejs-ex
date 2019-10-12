@@ -211,7 +211,7 @@ app.put('/track/:trackId', (request, response) => {
       },
       function(err, updatedTrack) {
         if (err) {
-          response.status(500).json(error)
+          response.status(500).json(err)
         } else {
           response.status(200).json(updatedTrack)
         }
