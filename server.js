@@ -134,16 +134,29 @@ app.get('/pagecount', function (req, res) {
 // Define routes
 //
 
-app.get('/tracks', function(request, response, next) {
-  Track.find((error, foundTracks) => {
-    if (error) {
-      console.error(error)
-      response.status(500).send(error)
-    } else {
-      response.json(foundTracks)
-    }
-  })
-})
+app.get('/tracks', function (req, res) {
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+    db.collection('tracks').find({}).toArray(function(err, result){
+      res.send(result);
+    });
+  } else {
+    res.send('error');
+  }
+});
+
+// app.get('/tracks', function(request, response, next) {
+//   Track.find((error, foundTracks) => {
+//     if (error) {
+//       console.error(error)
+//       response.status(500).send(error)
+//     } else {
+//       response.json(foundTracks)
+//     }
+//   })
+// })
 
 app.post('/track', (request, response) => {
   const newTrack = request.body
