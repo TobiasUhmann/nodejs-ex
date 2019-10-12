@@ -191,6 +191,29 @@ app.post('/track', (request, response) => {
 //   })
 // })
 
+app.put('/track/:trackId', (request, response) => {
+  const trackId = request.params.trackId
+  const update = request.body
+
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+    db.collection("tracks").update(
+      { _id: trackId },
+      {
+        $inc: { stock: 5 },
+        $set: update
+      },
+      function(err, updatedTrack) {
+        response.status(200).json(updatedTrack)
+      }
+   )
+  } else {
+    res.send('error');
+  }
+})
+
 // app.delete('/track/:trackId', (request, response) => {
 //   const trackId = request.params.trackId
 
