@@ -7,6 +7,8 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const cors = require('cors')
 
+var ObjectID = require('mongodb').ObjectID; 
+
 const Track = require('./models/track.js')
     
 Object.assign=require('object-assign')
@@ -200,7 +202,7 @@ app.put('/track/:trackId', (request, response) => {
   }
   if (db) {
     db.collection("tracks").update(
-      { _id: ObjectId(trackId) },
+      { _id: ObjectID(trackId) },
       {
         $set: update
       },
