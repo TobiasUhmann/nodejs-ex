@@ -200,7 +200,7 @@ app.put('/track/:trackId', (request, response) => {
   }
   if (db) {
     db.collection("tracks").update(
-      { _id: trackId },
+      { _id: ObjectId(trackId) },
       {
         $set: update
       },
