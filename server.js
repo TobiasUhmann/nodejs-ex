@@ -94,6 +94,19 @@ app.get('/', function (req, res) {
   }
 });
 
+app.get('/counts', function (req, res) {
+  if (!db) {
+    initDb(function(err){});
+  }
+  if (db) {
+    db.collection('counts').find({}).toArray(function(err, result){
+      res.send(result);
+    });
+  } else {
+    res.send('error');
+  }
+});
+
 app.get('/pagecount', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
