@@ -11,8 +11,8 @@ Object.assign=require('object-assign')
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
 
-server.use(bodyParser.urlencoded({ extended: false }))
-server.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -132,7 +132,7 @@ app.get('/pagecount', function (req, res) {
 // Define routes
 //
 
-server.get('/tracks', function(request, response, next) {
+app.get('/tracks', function(request, response, next) {
   Track.find((error, foundTracks) => {
     if (error) {
       console.error(error)
@@ -143,7 +143,7 @@ server.get('/tracks', function(request, response, next) {
   })
 })
 
-server.post('/track', (request, response) => {
+app.post('/track', (request, response) => {
   const newTrack = request.body
 
   Track.create(newTrack, (error, createdTrack) => {
@@ -156,7 +156,7 @@ server.post('/track', (request, response) => {
   })
 })
 
-server.get('/track/:trackId', (request, response) => {
+app.get('/track/:trackId', (request, response) => {
   const trackId = request.params.trackId
 
   Track.findById(trackId, (error, foundTrack) => {
@@ -169,7 +169,7 @@ server.get('/track/:trackId', (request, response) => {
   })
 })
 
-server.put('/track/:trackId', (request, response) => {
+app.put('/track/:trackId', (request, response) => {
   const trackId = request.params.trackId
   const update = request.body
 
@@ -183,7 +183,7 @@ server.put('/track/:trackId', (request, response) => {
   })
 })
 
-server.delete('/track/:trackId', (request, response) => {
+app.delete('/track/:trackId', (request, response) => {
   const trackId = request.params.trackId
 
   track.findByIdAndRemove(trackId, (error, removedTrack) => {
